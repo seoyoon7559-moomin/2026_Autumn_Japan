@@ -4,4 +4,5 @@ export const CONFIG = Object.freeze({
   supabaseUrl: 'https://ynzhiioicftbswyozfvt.supabase.co',
   publishableKey: 'sb_publishable_gtCWjf0vw1r8xwmnWMTvkQ_kD1oYcQf',
   collaborationEnabled: true,
+  anonymousCollaboration: true,
 });

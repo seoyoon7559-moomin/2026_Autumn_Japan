@@ -4,7 +4,7 @@ export class Sync {
  constructor(store,onStatus,config=CONFIG){this.config=config;this.store=store;this.onStatus=onStatus;this.session=null;this.busy=false;try{this.session=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');}catch{} }
  saveSession(s){this.session=s;try{if(s)sessionStorage.setItem(SESSION_KEY,JSON.stringify(s));else sessionStorage.removeItem(SESSION_KEY);}catch{} }
  async request(path,options={}){
-  const response=await fetch(this.config.supabaseUrl+path,{...options,headers:{apikey:this.config.publishableKey,'Content-Type':'application/json',...(this.session?.access_token?{Authorization:'Bearer '+this.session.access_token}:{}),...options.headers},signal:AbortSignal.timeout(15000)});
+  const response=await fetch(this.config.supabaseUrl+path,{...options,headers:{apikey:this.config.publishableKey,'Content-Type':'application/json',...(!this.config.anonymousCollaboration&&this.session?.access_token?{Authorization:'Bearer '+this.session.access_token}:{}),...options.headers},signal:AbortSignal.timeout(15000)});
   if(!response.ok){const err=await response.json().catch(()=>({}));throw Error(response.status===401?'로그인이 만료됐어요. 다시 로그인해 주세요.':response.status===403?'이 여행의 멤버 권한을 확인해 주세요.':err.msg||err.message||'연결하지 못했어요. 기기 저장은 유지됩니다.');}
   return response.status===204?null:response.json().catch(()=>null);
  }
@@ -14,12 +14,14 @@ export class Sync {
  async user(){if(!this.session)return null;await this.refresh();return this.request('/auth/v1/user');}
  async logout(){try{if(this.session)await this.request('/auth/v1/logout',{method:'POST'});}finally{this.saveSession(null);this.onStatus('로그아웃 · 이 기기에 저장');}}
  async run(){
-  if(!this.config.collaborationEnabled||!this.session||this.busy)return;
+  if(!this.config.collaborationEnabled||(!this.config.anonymousCollaboration&&!this.session)||this.busy)return;
   this.busy=true;this.onStatus('동기화 중…');
   try{
+   if(!this.config.anonymousCollaboration){
    await this.refresh();
    const member=await this.request('/rest/v1/autumn_trip_members?trip_id=eq.'+this.config.tripId+'&select=user_id');
    if(!member?.length)throw Error('로그인했지만 아직 여행 멤버가 아니에요. 관리자에게 멤버 등록을 요청해 주세요.');
+   }
    for(const row of Object.values(this.store.rows).filter(r=>r.dirty&&!r.conflict)){
     const sent=structuredClone(row);const body={trip_id:this.config.tripId,id:sent.id,kind:sent.kind,data:sent.data,deleted:!!sent.deleted,version:sent.version+1};
     let result;
