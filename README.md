@@ -9,7 +9,7 @@
 - 4일 일정, 15개 장소, 항공·열차·숙소, 2인 예산 입력 완료.
 - 일정·장소 추가/수정/삭제, 좋아요, 메모, 검색, 지역 필터, Google Maps 지도·길찾기.
 - 브라우저 저장, JSON 백업/복원. 로그인하지 않아도 사용 가능.
-- Supabase 협업 코드는 구현했지만 **현재 비활성화**입니다. 기존 프로젝트가 INACTIVE여서 DB 정책 검사·적용 및 온라인 동작 검증은 아직 하지 않았습니다.
+- Supabase 프로젝트 복원 및 가을 전용 테이블·초기 데이터·RLS 적용 완료. 역할별 DB 검사 15개 통과. 로그인 UI 활성화. 실제 이용 전 이메일 로그인 및 여행 멤버 등록이 필요합니다.
 - 로그인 없는 열람에서 보이는 기본 여행 일정·예산은 공개 저장소/Pages의 공개 정보입니다. 멤버의 편집 내용은 RLS를 통해 보호하도록 설계했습니다.
 
 ## 실행
@@ -29,16 +29,16 @@ node --test tests/*.test.mjs
 
 Settings → Pages → Build and deployment → Source를 **GitHub Actions**로 선택합니다. `.github/workflows/pages.yml`이 테스트 후 정적 파일만 업로드합니다. Actions에서 `Deploy travel app to GitHub Pages`를 실행할 수 있습니다.
 
-예상 주소(실제 배포 성공 후 사용): `https://seoyoon7559-moomin.github.io/2026_Autumn_Japan/`
+배포 주소: `https://seoyoon7559-moomin.github.io/2026_Autumn_Japan/`
 
 ## Supabase 연결을 마무리하는 순서
 
-1. 기존 `ynzhiioicftbswyozfvt` 프로젝트를 재활성화합니다. 여름 앱의 테이블·정책은 변경하지 않습니다.
-2. 관리자 권한으로 `supabase/setup.sql`, `supabase/seed.sql`을 순서대로 적용합니다. setup은 최초 1회용입니다. 중복 적용 시 정책/트리거 이름 충돌을 확인하고 임의 삭제하지 마세요.
+1. 완료: 기존 `ynzhiioicftbswyozfvt` 프로젝트를 재활성화했습니다. 여름 앱의 테이블·정책은 변경하지 않았습니다.
+2. 완료: `supabase/setup.sql`, `supabase/seed.sql` 적용. setup을 다시 실행하지 마세요. 실제 적용된 마이그레이션 이름은 `create_isolated_autumn_trip`입니다.
 3. Auth → URL Configuration에 실제 Pages 주소를 허용 리디렉션 URL로 추가합니다. 기존 여름 앱 URL을 덮어쓰지 않습니다.
 4. 두 사람이 이메일로 가입/로그인한 후 관리자가 `auth.users`의 실제 사용자 UUID 두 개만 `autumn_trip_members`에 등록합니다. 익명 사용자나 모든 로그인 사용자에게 멤버 권한을 주지 않습니다.
 5. `supabase/security-check.sql`과 Supabase Security Advisor로 접근 권한을 확인하고, 멤버/비멤버/로그아웃 상태의 읽기·쓰기 테스트를 합니다.
-6. `config.js`에서 `collaborationEnabled: true`로 바꾸고 재배포합니다. 로그인/두 기기 동기화/동시 수정 충돌/로그아웃을 확인합니다.
+6. `collaborationEnabled: true`로 활성화했습니다. 로그인/두 기기 동기화/동시 수정 충돌/로그아웃의 실제 사용자 검증이 남아 있습니다.
 
 `trip_id`는 **2026AutumnJapan**이며 새 테이블은 `autumn_trip_members`, `autumn_trip_items`입니다. 원본 `trip_shared_state`에는 접근하지 않습니다. 항목별 낙관적 버전 확인으로 동시 편집 충돌을 표시하고, 삭제는 tombstone으로 동기화합니다. 온라인에서는 10초 간격으로 갱신합니다.
 
@@ -62,6 +62,7 @@ Settings → Pages → Build and deployment → Source를 **GitHub Actions**로 
 
 - Node 자동 검사: 예산, 날짜, 영구 저장, 삭제 유지, 충돌 보존/해결, 지도 URL 인코딩, 저장 오류 표시.
 - 브라우저: 초기 화면 렌더링, 일정 추가→새로고침 유지→삭제, 좋아요·메모 저장 유지, 반다이바시 Google Maps 지도 표시 확인.
-- 미검증: 실제 Supabase RLS 및 두 계정 협업, 배포 환경 동작, 모든 모바일 브라우저의 동작.
+- Supabase: 실제 DB에서 멤버/비멤버/익명/버전충돌/좋아요 소유권 등 15개 검사 통과. Security Advisor 지적 0건. 브라우저 저장·동기화 로직 자동 검사 11개 통과.
+- 미검증: 실제 이메일 로그인 및 두 기기 공동 편집, 모든 모바일 브라우저의 동작.
 
 보안 기준: [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
