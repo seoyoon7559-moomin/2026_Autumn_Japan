@@ -61,7 +61,7 @@ Settings → Pages → Build and deployment → Source를 **GitHub Actions**로 
 ## 검증 범위
 
 - Node 자동 검사: 예산, 날짜, 영구 저장, 삭제 유지, 충돌 보존/해결, 지도 URL 인코딩, 저장 오류 표시.
-- 브라우저: 초기 화면 렌더링, 일정 추가→새로고침 유지→삭제 확인.
-- 미검증: 실제 Supabase RLS 및 두 계정 협업, 배포 환경에서 Google 지도 임베드, 모든 모바일 브라우저의 동작.
+- 브라우저: 초기 화면 렌더링, 일정 추가→새로고침 유지→삭제, 좋아요·메모 저장 유지, 반다이바시 Google Maps 지도 표시 확인.
+- 미검증: 실제 Supabase RLS 및 두 계정 협업, 배포 환경 동작, 모든 모바일 브라우저의 동작.
 
 보안 기준: [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
