@@ -1,4 +1,4 @@
-import {CONFIG} from './config.js?v=public1';
+import {CONFIG} from './config.js?v=plain1';
 const SESSION_KEY='travel:2026AutumnJapan:session';
 export class Sync {
  constructor(store,onStatus,config=CONFIG){this.config=config;this.store=store;this.onStatus=onStatus;this.session=null;this.busy=false;try{this.session=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');}catch{} }

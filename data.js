@@ -1,8 +1,8 @@
 export const DAYS = [
   {date:'2026-10-22', label:'10.22 목', title:'니가타 → 에치고유자와', tag:'도시 산책과 온천', stay:'Yuki-no-Hana'},
-  {date:'2026-10-23', label:'10.23 금', title:'에치고유자와 → 도쿄', tag:'느긋한 아침, 도쿄의 밤', stay:'APA Kayabacho Hatchobori Ekimae'},
-  {date:'2026-10-24', label:'10.24 토', title:'도쿄 → 니가타', tag:'책과 커피, 시부야 산책', stay:'Art Hotel Niigata Station'},
-  {date:'2026-10-25', label:'10.25 일', title:'니가타 → 인천', tag:'아쉬움을 담아 집으로', stay:''},
+  {date:'2026-10-23', label:'10.23 금', title:'에치고유자와 → 도쿄', tag:'료칸 조식 · 도쿄 관광', stay:'APA Kayabacho Hatchobori Ekimae'},
+  {date:'2026-10-24', label:'10.24 토', title:'도쿄 → 니가타', tag:'다이칸야마 · 시부야', stay:'Art Hotel Niigata Station'},
+  {date:'2026-10-25', label:'10.25 일', title:'니가타 → 인천', tag:'공항 이동 · 귀국', stay:''},
 ];
 const events = [
   [0,'09:40','인천 출발 · KE2197','ICN 09:40 → KIJ 11:45 · 대한항공','Incheon International Airport',true],
