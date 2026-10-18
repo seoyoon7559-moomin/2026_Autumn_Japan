@@ -65,4 +65,3 @@ Settings → Pages → Build and deployment → Source를 **GitHub Actions**로 
 - 미검증: 실제 Supabase RLS 및 두 계정 협업, 배포 환경에서 Google 지도 임베드, 모든 모바일 브라우저의 동작.
 
 보안 기준: [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
-
