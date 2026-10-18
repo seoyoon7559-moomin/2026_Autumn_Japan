@@ -1,5 +1,5 @@
-import {CONFIG} from './config.js';
-import {SEED} from './data.js';
+import {CONFIG} from './config.js?v=public1';
+import {SEED} from './data.js?v=public1';
 export const KEY = 'travel:2026AutumnJapan:v1';
 export function validRow(r) {
  return r && typeof r.id==='string' && /^[\w-]{1,100}$/.test(r.id) && ['event','place','like'].includes(r.kind) && r.data && typeof r.data==='object' && !Array.isArray(r.data)

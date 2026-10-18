@@ -1,7 +1,7 @@
-import {DAYS,BUDGET} from './data.js';
-import {CONFIG} from './config.js';
-import {Store,validRow,searchUrl,directionsUrl} from './store.js';
-import {Sync} from './sync.js';
+import {DAYS,BUDGET} from './data.js?v=public1';
+import {CONFIG} from './config.js?v=public1';
+import {Store,validRow,searchUrl,directionsUrl} from './store.js?v=public1';
+import {Sync} from './sync.js?v=public1';
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const store=new Store();let day=0,filter='전체',editing=null,user=null,timer,toastTimer;
 let localActor;try{localActor=localStorage.getItem('travel:2026AutumnJapan:actor');if(!localActor){localActor=crypto.randomUUID();localStorage.setItem('travel:2026AutumnJapan:actor',localActor);}}catch{localActor=crypto.randomUUID();}
